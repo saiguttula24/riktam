@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { LocalsRequest } from '../utils/types';
 const bcrypt = require('bcrypt');
 const Users = require('../models/user-model');
 const jwt = require('jsonwebtoken');
@@ -11,7 +12,12 @@ class AuthController {
         const { error, value } = loginSchema.validate(req.body);
         if (error) return res.status(400).send({ success:false, message: error.details[0].message });
     
-        const User = await Users.findOne({ email: value.email });
+        const User = await Users.findOne({ 
+          $or: [
+            { username: value.email },
+            { email: value.email }
+          ]
+         });
         if (!User) return res.status(404).send({ success:false, message: 'Users not found' });
     
         const passwordMatch = await bcrypt.compare(value.password, User.password);
@@ -20,17 +26,21 @@ class AuthController {
         const token = jwt.sign({ User }, process.env.JWT_SECRET, { expiresIn: '8h' });
     
         return res.status(200).send({ success:true, message: 'Login successful', token: token, 
-          user: {username: User.username, email: User.email, isAdmin: User.isAdmin, isVerified: User.isVerified} });
+          user: {username: User.username, email: User.email, id: User._id.toString(), isAdmin: User.isAdmin, isVerified: User.isVerified} });
       } catch (error) {
         console.error('Error during login:', error);
         return res.status(500).send({ success:false, message: 'Internal server error' });
       }
     }
 
-    async createUser(req: Request, res: Response): Promise<Response> {
+    async createUser(req: LocalsRequest, res: Response): Promise<Response> {
       try{
           const { error, value } = createUserSchema.validate(req.body);
           if (error) return res.status(400).send({ success:false, message: error.details[0].message });
+
+          const isAdmin = req.locals?.User?.isAdmin;
+
+          if(!isAdmin) return res.status(401).send({ success:false, message: 'Unauthorised' });
       
           const existingUser = await Users.findOne({
             $or: [

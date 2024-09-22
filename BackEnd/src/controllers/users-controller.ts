@@ -6,7 +6,7 @@ class UserController {
     async getAllUsers(req:LocalsRequest, res:Response): Promise<Response> {
         try {
             const userId = req.locals?.User?._id;
-            if(!userId) return res.status(401).send({ success:false, message: "User not found" });
+            if(!userId) return res.status(401).send({ success:false, message: "Access denied" });
 
             const users = await Users.find({
                 $and: [
