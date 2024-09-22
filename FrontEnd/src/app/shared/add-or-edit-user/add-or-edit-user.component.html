@@ -1,0 +1,7 @@
+<div class="w-full">
+    <p class="text-lg font-medium text-gray-900 mt-0">Add or Remove users from {{group.name}} group</p>
+    <p-multiSelect [options]="users" [(ngModel)]="selectedUsers" defaultLabel="Edit Users" optionLabel="username" display="chip"></p-multiSelect>
+    <div class="w-full text-right pt-3">
+        <button pButton type="button" label="Confirm" (click)="onClickConfirm()"></button>
+    </div>
+</div>

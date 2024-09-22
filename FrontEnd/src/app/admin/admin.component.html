@@ -1,0 +1,21 @@
+<div class="grid nested-grid" style="min-height: calc(100vh - 8px);">
+    <div class="col-12 md:col-12 lg:col-4 lg:col-offset-4 xl:col-4 xl:col-offset-4 flex flex-column justify-content-center">
+        <div class="w-full flex flex-row justify-content-end align-content-center mb-3 pr-5">
+            <p-button label="Create User" icon="pi pi-plus" iconPos="left" (click)="onClickCreateUser()"></p-button>
+            <button pButton type="button" icon="pi pi-sign-out" class="p-button-rounded p-button-text ml-2" (click)="onClickLogout()"></button>
+        </div>
+        <div class="w-full flex flex-column justify-content-center align-items-center text-center">
+            <p-orderList [listStyle]="{'max-height':'70vh'}" [value]="users" header="List of Users" filterBy="username,email">
+                <ng-template let-user pTemplate="item">
+                    <div class="flex flex-row justify-content-between align-items-center">
+                        <div class="mx-3 text-left">
+                            <p class="text-base font-medium text-gray-900"><span class="text-sm font-normal mr-2">UserName :</span>{{user.username}}</p>
+                            <p class="text-base font-medium text-gray-900"><span class="text-sm font-normal mr-2">Email :</span>{{user.email}}</p>
+                        </div>
+                        <button pButton pRipple type="button" icon="pi pi-user-edit" class="p-button-rounded p-button-secondary p-button-text" (click)="onClickEditUser(user)"></button>
+                    </div>
+                </ng-template>
+            </p-orderList>
+        </div>
+    </div>
+</div>

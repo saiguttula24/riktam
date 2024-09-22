@@ -1,0 +1,24 @@
+<div class="grid nested-grid" style="min-height: calc(100vh - 8px);">
+    <div class="col-12 md:col-12 lg:col-4 lg:col-offset-4 xl:col-4 xl:col-offset-4 flex flex-column justify-content-center">
+        <div class="w-full flex flex-column justify-content-center align-items-center text-center">
+            <h1 class="text-2xl font-bold mb-1 mb-3"><span class="text-gray-900">Verify your account</span></h1>
+            <div class="w-full max-w-20rem">
+                <form [formGroup]="verifyForm" (ngSubmit)="onFormSubmit()"> 
+                    <div class="p-inputgroup mt-3 mb-1">
+                        <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
+                        <p-password [feedback]="false" placeholder="Password" formControlName="password" [toggleMask]="true"></p-password>
+                    </div>
+                    <small *ngIf="verifyForm?.get('password')?.hasError('required') && verifyForm?.get('password')?.touched" class="text-red-600">Password is required</small>
+                    <small *ngIf="verifyForm?.get('password')?.hasError('pattern') && verifyForm?.get('password')?.touched" class="text-red-600">Password must be 8+ chars, with 1 lowercase, 1 uppercase, and 1 digit</small>
+                    <div class="p-inputgroup mt-3 mb-1">
+                        <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
+                        <p-password [feedback]="false" placeholder="Confirm Password" formControlName="confirmPassword" [toggleMask]="true"></p-password>
+                    </div>
+                    <small *ngIf="verifyForm?.get('confirmPassword')?.hasError('required') && verifyForm?.get('confirmPassword')?.touched" class="text-red-600">Confirm Password is required</small>
+                    <small *ngIf="verifyForm?.value?.password !== verifyForm?.value?.confirmPassword  && verifyForm?.get('confirmPassword')?.touched" class="text-red-600">Password mismatch</small>
+                    <button pButton type="submit" [disabled]="!verifyForm.valid" label="Verify" class="p-button-raised text-center w-full mt-2 mb-2"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

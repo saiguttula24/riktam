@@ -1,0 +1,19 @@
+::ng-deep .p-button-label{
+    font-weight: 600 !important;
+}
+
+::ng-deep .p-dialog-content {
+    overflow-y: visible !important;
+}
+
+::ng-deep .p-button:focus {
+    outline: none;
+}
+
+.right-30px{
+    right: 30px;
+}
+
+.left-30px{
+    left: 30px;
+}

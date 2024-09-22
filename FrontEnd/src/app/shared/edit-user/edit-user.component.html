@@ -1,0 +1,16 @@
+<div class="w-full">
+    <form [formGroup]="editUserForm" (ngSubmit)="onFormSubmit()">
+        <div class="p-inputgroup mb-1">
+            <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+            <input type="text" pInputText placeholder="UserName" formControlName="username">         
+        </div>
+        <small *ngIf="editUserForm?.get('username')?.hasError('required') && editUserForm?.get('username')?.touched" class="text-red-600">UserName is required</small> 
+        <div class="p-inputgroup mt-2 mb-1">
+            <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+            <input type="email" pInputText placeholder="Email" formControlName="email">         
+        </div>
+        <small *ngIf="editUserForm?.get('email')?.hasError('required') && editUserForm?.get('email')?.touched" class="text-red-600">Email is required</small> 
+        <small *ngIf="editUserForm?.get('email')?.hasError('email') && editUserForm?.get('email')?.touched" class="text-red-600">Enter valid email</small>  
+        <button pButton type="submit" [disabled]="!editUserForm.valid" label="Update" class="p-button-raised text-center w-full mt-2 mb-2"></button>
+    </form>
+</div>

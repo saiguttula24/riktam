@@ -1,0 +1,57 @@
+<div class="grid" *ngIf="groups.length > 0">
+    <div class="xl:col-2 p-0 bg-blue-50 h-screen" >
+        <div class="flex flex-row justify-content-start align-content-center p-3 border-bottom-1 border-300">
+            <p-button class="text-sm font-medium" label="Create Group" icon="pi pi-plus" iconPos="left" (click)="openCreateGroupDialog()"></p-button>
+            <button pButton type="button" icon="pi pi-sign-out" class="p-button-rounded p-button-text ml-2" (click)="onClickLogout()"></button>
+        </div>
+        <app-group *ngFor="let group of groups" [group]="group" (click)="onClickGroup(group)"></app-group>
+    </div>
+    <div class="xl:col-10 p-0" *ngIf="selectedGroup">
+        <p-panel header="{{selectedGroup.name}}">
+            <ng-template pTemplate="icons">
+                    <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
+                        <span class="pi pi-ellipsis-h"></span>
+                    </button>
+                    <p-menu #menu id="config_menu" [model]="items" [popup]="true"></p-menu>
+            </ng-template>
+            <div class="flex flex-column justify-content-start align-items-start relative" style="height: calc(100vh - 115px);">
+                <div style="height: calc(100vh - 205px);" class="flex flex-column justify-content-start align-items-start w-full overflow-y-auto">
+                    <div *ngFor="let message of messages" class="flex flex-column justify-content-start align-items-start p-2 bg-blue-50 my-3 border-round-md relative "
+                     [ngClass]="{ 'align-self-end mr-3': message.sentBy == this.id }" style="max-width: 75%;">
+                        <p class="text-sm font-normal text-blue-500 m-0" [ngClass]="{ 'text-orange-500' : message.sentBy == this.id}">{{message.sentBy | user}}</p>
+                        <p class="text-base font-normal text-gray-900 m-0 mt-2">{{message.message}}</p>
+                        <button pButton type="button" [icon]="isLiked(message.likes) ? 'pi pi-heart-fill' : 'pi pi-heart' " class="p-button-rounded p-button-text absolute"
+                        [ngClass]="{ 'right-0' : message.sentBy == this.id, 'left-0' : message.sentBy != this.id}" style="bottom: -40px;" (click)="liked(message._id)"></button>
+                        <button pButton type="button" icon="pi pi-exclamation-circle" class="p-button-rounded p-button-text absolute"
+                        [ngClass]="{ 'right-30px' : message.sentBy == this.id, 'left-30px' : message.sentBy != this.id}" style="bottom: -40px;" 
+                        (click)="op.toggle($event)"></button>
+                        <p-overlayPanel #op>
+                            <ng-template pTemplate>
+                                Likes
+                                <div *ngIf="message.likes && message.likes.length > 0;" class="flex flex-column justify-content-start align-content-start">
+                                    <p class="text-xs font-normal text-gray-900" *ngFor="let like of message.likes">{{like | user}}</p>
+                                </div>
+                                <p *ngIf="!message.likes || message.likes.length == 0;" class="text-xs font-normal text-gray-900">No likes yet</p>
+                            </ng-template>
+                        </p-overlayPanel>
+                    </div>
+                </div>
+                <div class="w-full absolute bottom-0 right-0 left-0 flex flex-row justify-content-start align-items-center">
+                    <textarea class="w-full" [(ngModel)]="enteredText" rows="3" pInputTextarea [autoResize]="false" maxlength="912" placeholder="Enter a message" 
+                    (keyup.enter)="onClickSendMessage()"></textarea>
+                    <button pButton pRipple type="button" icon="pi pi-send" class="p-button-rounded ml-3" (click)="onClickSendMessage()"></button>
+                </div>
+            </div>
+        </p-panel>
+    </div>
+    <div class="xl:col-10 p-0 flex flex-row justify-content-center align-items-center h-screen" *ngIf="!selectedGroup">
+        <p class="text-base font-medium text-gray-900">Click on a conversation to view chats</p>
+    </div>
+</div>
+
+<div class="grid" *ngIf="groups.length == 0">
+    <div class="xl:col-4 xl:col-offset-4 flex flex-column justify-content-center align-items-center h-screen">
+        <p class="text-gray-900 text-sm font-normal">Start a new conversation by clicking</p>
+        <p-button class="text-sm font-medium" label="Create Group" icon="pi pi-plus" iconPos="left" (click)="openCreateGroupDialog()"></p-button>
+    </div>
+</div>

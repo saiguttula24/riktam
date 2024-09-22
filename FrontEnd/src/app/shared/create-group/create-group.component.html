@@ -1,0 +1,16 @@
+<div class="w-full" >
+    <form [formGroup]="createGroupForm" (ngSubmit)="onFormSubmit()">
+        <div class="p-inputgroup mb-1">
+            <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+            <input type="text" pInputText placeholder="Name" formControlName="name">         
+        </div>
+        <small *ngIf="createGroupForm?.get('name')?.hasError('required') && createGroupForm?.get('username')?.touched" class="text-red-600">Name is required</small> 
+        <div class="p-inputgroup mt-2 mb-1">
+            <span class="p-inputgroup-addon"><i class="pi pi-info-circle"></i></span>
+            <input type="text" pInputText placeholder="Description" formControlName="description">         
+        </div>
+        <small *ngIf="createGroupForm?.get('description')?.hasError('required') && createGroupForm?.get('description')?.touched" class="text-red-600">Description is required</small> 
+        <p-multiSelect [options]="users" (onChange)="userAction($event)" optionLabel="username" tooltipPosition="top" defaultLabel="Add Users" class="w-full"></p-multiSelect>
+        <button pButton type="submit" [disabled]="!createGroupForm.valid" label="Create" class="p-button-raised text-center w-full mt-2 mb-2"></button>
+    </form>
+</div>

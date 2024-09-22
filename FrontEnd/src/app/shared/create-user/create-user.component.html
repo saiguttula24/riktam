@@ -1,0 +1,37 @@
+<div class="w-full" *ngIf="!userCreated">
+    <form [formGroup]="createUserForm" (ngSubmit)="onFormSubmit()">
+        <div class="p-inputgroup mb-1">
+            <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+            <input type="text" pInputText placeholder="UserName" formControlName="username">         
+        </div>
+        <small *ngIf="createUserForm?.get('username')?.hasError('required') && createUserForm?.get('username')?.touched" class="text-red-600">UserName is required</small> 
+        <div class="p-inputgroup mt-2 mb-1">
+            <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+            <input type="email" pInputText placeholder="Email" formControlName="email">         
+        </div>
+        <small *ngIf="createUserForm?.get('email')?.hasError('required') && createUserForm?.get('email')?.touched" class="text-red-600">Email is required</small> 
+        <small *ngIf="createUserForm?.get('email')?.hasError('email') && createUserForm?.get('email')?.touched" class="text-red-600">Enter valid email</small>  
+        <div class="p-inputgroup mt-2 mb-1">
+            <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
+            <input type="password" pInputText placeholder="Password" formControlName="password" [disabled]="true">    
+        </div>
+        <small class="text-gray-900">Note: Temporary password provided. Update during sign-up.</small>
+        <small *ngIf="createUserForm?.get('password')?.hasError('required') && createUserForm?.get('password')?.touched" class="text-red-600">Password is required</small>
+        <small *ngIf="createUserForm?.get('password')?.hasError('pattern') && createUserForm?.get('password')?.touched" class="text-red-600">Password must be 8+ chars, with 1 lowercase, 1 uppercase, and 1 digit</small>
+        <button pButton type="submit" [disabled]="!createUserForm.valid" label="Create" class="p-button-raised text-center w-full mt-2 mb-2"></button>
+    </form>
+</div>
+
+<div class="w-full flex flex-column justify-content-start align-content-center " *ngIf="userCreated">
+    <div class="text-left">
+        <p class="text-base font-medium text-gray-900">
+          <span class="text-sm font-normal mr-2">UserName :</span>
+          <span class="user-select-text">{{formValues.username}}</span>
+        </p>
+        <p class="text-base font-medium text-gray-900">
+          <span class="text-sm font-normal mr-2">Password :</span>
+          <span class="user-select-text">{{password}}</span>
+        </p>
+        <small class="text-gray-900">Note: Copy and share these credentials</small>
+    </div>
+</div>
